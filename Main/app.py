@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 import urllib.parse
 import os
 
-os.environ['GOOGLE_MAPS_API_KEY'] = 'AIzaSyDu-0LziMypXD4KGf0Q0lkid57Yj7KYxHo'
+os.environ['GOOGLE_MAPS_API_KEY'] = 'GOOGLEAPIHERE'
 
 app = Flask(__name__)
 
