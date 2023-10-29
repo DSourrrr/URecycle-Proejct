@@ -1,14 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Google Maps Search</title>
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}"></script>
+    <title>URecycle Material Selection</title>
 </head>
 <body>
-    <h1>Search for a Location on Google Maps</h1>
-    <form method="get" action="/search">
-        <input type="text" name="location" placeholder="Enter a location">
-        <button type="submit">Search</button>
+    <h1>URecycle Material Selection</h1>
+    <form method="GET" action="{{ url_for('search') }}">
+        <label for="material">Select Material:</label><br>
+        <input type="radio" name="material" value="Paper"> Paper<br>
+        <input type="radio" name="material" value="Plastic"> Plastic<br>
+        <input type="radio" name="material" value="Glass"> Glass<br>
+        <input type="radio" name="material" value="Metal"> Metal<br>
+        <input type="radio" name="material" value="Oil"> Oil<br>
+        <input type="radio" name="material" value="Batteries"> Batteries<br>
+        <input type="radio" name="material" value="Electronics"> Electronics<br><br>
+
+        <label for="zip">Enter ZIP Code:</label><br>
+        <input type="text" name="zip" required><br><br>
+
+        <label for="distance">Maximum Distance:</label><br>
+        <input type="text" name="distance" required><br><br>
+
+        <input type="submit" value="Search">
     </form>
 </body>
 </html>

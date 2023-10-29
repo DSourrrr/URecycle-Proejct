@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recycling Points</title>
+</head>
+<body>
+    <h2>Places to Recycle {{ material }} in {{ zip_code }}</h2>
+    <div id="map" style="width: 100%; height: 400px;" data-lat="{{ lat }}" data-lng="{{ lng }}"></div>
+    <ul>
+        {% for place in places %}
+            <li>{{ place.name }}</li>
+        {% endfor %}
+    </ul>
+    <script>
+function initMap() {
+    var lat = parseFloat(document.getElementById('map').getAttribute('data-lat'));
+    var lng = parseFloat(document.getElementById('map').getAttribute('data-lng'));
+    var zoom = 15;
+
+    if (!isNaN(lat) && !isNaN(lng)) {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: lat, lng: lng },
+            zoom: zoom
+        });
+
+            var infowindow = new google.maps.InfoWindow();
+
+            var places = {{ places|tojson }};
+
+            for (var i = 0; i < places.length; i++) {
+                var place = places[i];
+                var marker = new google.maps.Marker({
+                    position: place.geometry.location,
+                    map: map,
+                    title: place.name
+                });
+
+                google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                    return function() {
+                        infowindow.setContent(place.name);
+                        infowindow.open(map, marker);
+                    }
+                })(marker, i));
+            }
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap"></script>
+</body>
+</html>
