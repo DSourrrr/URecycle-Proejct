@@ -23,27 +23,32 @@ function initMap() {
             zoom: zoom
         });
 
-            var infowindow = new google.maps.InfoWindow();
+        var infowindow = new google.maps.InfoWindow();
+        var places = {{ places|tojson }};
 
-            var places = {{ places|tojson }};
+        for (var i = 0; i < places.length; i++) {
+            var place = places[i];
+            var marker = new google.maps.Marker({
+                position: place.geometry.location,
+                map: map,
+                title: place.name
+            });
 
-            for (var i = 0; i < places.length; i++) {
-                var place = places[i];
-                var marker = new google.maps.Marker({
-                    position: place.geometry.location,
-                    map: map,
-                    title: place.name
-                });
-
-                google.maps.event.addListener(marker, 'click', (function(marker, i) {
-                    return function() {
-                        infowindow.setContent(place.name);
-                        infowindow.open(map, marker);
+            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                return function() {
+                    var content = '<strong>Name:</strong> ' + places[i].name + '<br>' +
+                                  '<strong>Address:</strong> ' + places[i].formatted_address + '<br>';
+                    if (places[i].formatted_phone_number) {
+                        content += '<strong>Phone:</strong> ' + places[i].formatted_phone_number + '<br>';
                     }
-                })(marker, i));
-            }
+                    infowindow.setContent(content);
+                    infowindow.open(map, marker);
+                }
+            })(marker, i));
         }
-    </script>
+    }
+}
+        </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap"></script>
 </body>
 </html>
